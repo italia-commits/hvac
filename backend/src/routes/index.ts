@@ -10,6 +10,7 @@ import opportunityRoutes from './replacementOpportunities';
 import invoiceRoutes from './invoices';
 import billingRoutes from './billing';
 import webhookRoutes from './webhooks';
+import scheduleRoutes from './schedule';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/opportunities', opportunityRoutes);
 router.use('/invoices', invoiceRoutes);
 router.use('/billing', billingRoutes);
 router.use('/webhooks', webhookRoutes);
+router.use('/schedule', scheduleRoutes);
 
 export { router as routes };

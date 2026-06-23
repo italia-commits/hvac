@@ -120,3 +120,95 @@ export function getAgreementExpiringHtml(
     </div>
   `;
 }
+
+// ============================================================
+// Campaign Email Templates (Phase 3)
+// ============================================================
+
+export function getWelcomeEmailHtml(name: string, companyName: string): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2>Welcome to HVAC RenewIQ!</h2>
+      <p>Hi ${name},</p>
+      <p>Thank you for joining HVAC RenewIQ. Your company <strong>${companyName}</strong> has been registered successfully.</p>
+      <p>Here's what you can do next:</p>
+      <ul>
+        <li><strong>Import customers</strong> — Add your customer database</li>
+        <li><strong>Create agreements</strong> — Set up maintenance agreements</li>
+        <li><strong>Schedule services</strong> — Track service calls</li>
+        <li><strong>Manage equipment</strong> — Log customer equipment details</li>
+      </ul>
+      <a href="${env.frontendUrl}/dashboard" style="display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 6px;">
+        Go to Dashboard
+      </a>
+    </div>
+  `;
+}
+
+export function getInvoiceNotificationHtml(
+  customerName: string,
+  invoiceNumber: string,
+  amount: string,
+  dueDate: string,
+  invoiceUrl: string
+): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2>Invoice Ready</h2>
+      <p>Hi ${customerName},</p>
+      <p>A new invoice is ready for you:</p>
+      <table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+        <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Invoice</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${invoiceNumber}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Amount Due</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${amount}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Due Date</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${dueDate}</td></tr>
+      </table>
+      <a href="${invoiceUrl}" style="display: inline-block; padding: 12px 24px; background-color: #059669; color: white; text-decoration: none; border-radius: 6px;">
+        View Invoice
+      </a>
+    </div>
+  `;
+}
+
+export function getOverdueInvoiceHtml(
+  customerName: string,
+  invoiceNumber: string,
+  amount: string,
+  dueDate: string,
+  invoiceUrl: string
+): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #dc2626;">⚠️ Payment Overdue</h2>
+      <p>Hi ${customerName},</p>
+      <p>This is a reminder that invoice <strong>${invoiceNumber}</strong> for <strong>${amount}</strong> was due on <strong>${dueDate}</strong> and is now overdue.</p>
+      <p>Please make payment at your earliest convenience to avoid service interruption.</p>
+      <a href="${invoiceUrl}" style="display: inline-block; padding: 12px 24px; background-color: #dc2626; color: white; text-decoration: none; border-radius: 6px;">
+        Pay Now
+      </a>
+    </div>
+  `;
+}
+
+export function getAgreementFollowUpHtml(
+  customerName: string,
+  agreementNumber: string,
+  endDate: string,
+  renewalUrl: string,
+  daysRemaining: number
+): string {
+  const urgencyColor = daysRemaining <= 30 ? '#dc2626' : daysRemaining <= 60 ? '#d97706' : '#059669';
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: ${urgencyColor};">Agreement Renewal Follow-Up</h2>
+      <p>Hi ${customerName},</p>
+      <p>We previously reminded you about your agreement <strong>${agreementNumber}</strong> expiring on <strong>${endDate}</strong>.</p>
+      <p>There are only <strong style="color: ${urgencyColor};">${daysRemaining} days</strong> remaining. Secure your coverage now.</p>
+      <a href="${renewalUrl}" style="display: inline-block; padding: 12px 24px; background-color: ${urgencyColor}; color: white; text-decoration: none; border-radius: 6px;">
+        Renew Now
+      </a>
+    </div>
+  `;
+}

@@ -87,7 +87,7 @@ router.post('/register', authRateLimiter, async (req: Request, res: Response) =>
       to: normalizedEmail,
       subject: 'Verify your HVAC RenewIQ account',
       html: getEmailVerificationHtml(firstName, verificationUrl),
-    }).catch((err) => console.error('[AUTH] Failed to send verification email:', err.message));
+    }).catch((err: any) => console.error('[AUTH] Failed to send verification email:', err.message));
 
     // Generate tokens
     const tokens = generateTokens({
@@ -476,7 +476,7 @@ router.post('/resend-verification', authenticate, async (req: Request, res: Resp
       to: rows[0].email,
       subject: 'Verify your HVAC RenewIQ account',
       html: getEmailVerificationHtml(rows[0].first_name, verificationUrl),
-    }).catch((err) => console.error('[AUTH] Resend verification email failed:', err.message));
+    }).catch((err: any) => console.error('[AUTH] Resend verification email failed:', err.message));
 
     res.json({ success: true, message: 'Verification email sent' });
   } catch (error) {
@@ -519,7 +519,7 @@ router.post('/forgot-password', passwordResetLimiter, async (req: Request, res: 
       to: rows[0].email,
       subject: 'Reset your HVAC RenewIQ password',
       html: getPasswordResetHtml(rows[0].first_name, resetUrl),
-    }).catch((err) => console.error('[AUTH] Password reset email failed:', err.message));
+    }).catch((err: any) => console.error('[AUTH] Password reset email failed:', err.message));
 
     res.json({ success: true, message: 'If the email exists, a reset link has been sent.' });
   } catch (error) {
