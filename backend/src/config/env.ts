@@ -8,6 +8,7 @@ interface EnvConfig {
   nodeEnv: string;
   databaseUrl: string;
   databaseSsl: boolean;
+  openaiApiKey: string;
   jwtAccessSecret: string;
   jwtRefreshSecret: string;
   jwtAccessExpiresIn: string;
@@ -44,6 +45,7 @@ export const env: EnvConfig = {
   nodeEnv: process.env.NODE_ENV || 'development',
   databaseUrl: getEnvVar('DATABASE_URL', 'postgresql://localhost:5432/hvac_renewiq'),
   databaseSsl: process.env.DATABASE_SSL === 'true',
+  openaiApiKey: getEnvVar('OPENAI_API_KEY'),
   jwtAccessSecret: getEnvVar('JWT_ACCESS_SECRET'),
   jwtRefreshSecret: getEnvVar('JWT_REFRESH_SECRET'),
   jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
