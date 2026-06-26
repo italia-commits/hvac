@@ -1,15 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../lib/api';
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: 'super_admin' | 'company_admin' | 'manager' | 'technician' | 'dispatcher';
-  companyId: string;
-  companyName?: string;
-  avatar?: string;
-}
+import type { User } from '../lib/api-types';
 
 interface AuthContextType {
   user: User | null;
@@ -25,11 +16,20 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+interface LoginResponse {
+  accessToken: string;
+  refreshToken?: string;
+  user: User;
+  requiresTwoFactor?: boolean;
+  tempToken?: string;
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // On mount, restore from localStorage and verify token
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
@@ -37,6 +37,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(savedToken);
       try {
         setUser(JSON.parse(savedUser));
+        // Silently verify the token is still valid
+        api.get('/auth/me').catch(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setToken(null);
+          setUser(null);
+        });
       } catch {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -46,34 +53,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await api.post('/auth/login', { email, password });
+    const response = await api.post<LoginResponse>('/auth/login', { email, password });
     const data = response.data;
 
     if (data.requiresTwoFactor) {
       return { requiresTwoFactor: true, tempToken: data.tempToken };
     }
 
-    localStorage.setItem('token', data.token);
+    const accessToken = data.accessToken;
+    localStorage.setItem('token', accessToken);
     localStorage.setItem('user', JSON.stringify(data.user));
-    setToken(data.token);
+    setToken(accessToken);
     setUser(data.user);
     return {};
   };
 
   const verifyTwoFactor = async (code: string, tempToken: string) => {
-    const response = await api.post('/auth/2fa/verify', { code, tempToken });
+    const response = await api.post<LoginResponse>('/auth/login/2fa', { code, tempToken });
     const data = response.data;
-    localStorage.setItem('token', data.token);
+    const accessToken = data.accessToken;
+    localStorage.setItem('token', accessToken);
     localStorage.setItem('user', JSON.stringify(data.user));
-    setToken(data.token);
+    setToken(accessToken);
     setUser(data.user);
   };
 
-  const register = async (data: { name: string; email: string; password: string; companyName: string }) => {
-    await api.post('/auth/register', data);
+  const register = async (regData: { name: string; email: string; password: string; companyName: string }) => {
+    await api.post('/auth/register', regData);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // Ignore - we clear locally regardless
+    }
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setToken(null);
