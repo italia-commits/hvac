@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  Brain,
 } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -27,6 +28,7 @@ const navigation = [
   { name: 'Service Calls', href: '/service-calls', icon: Phone, roles: ['super_admin', 'company_admin', 'manager', 'technician', 'dispatcher'] },
   { name: 'Opportunities', href: '/opportunities', icon: Target, roles: ['super_admin', 'company_admin', 'manager'] },
   { name: 'Reports', href: '/reports', icon: BarChart3, roles: ['super_admin', 'company_admin', 'manager'] },
+  { name: 'AI Insights', href: '/insights', icon: Brain, roles: ['super_admin', 'company_admin', 'manager'] },
   { name: 'Companies', href: '/companies', icon: Building2, roles: ['super_admin'] },
   { name: 'Admin', href: '/admin', icon: Shield, roles: ['super_admin'] },
 ];
