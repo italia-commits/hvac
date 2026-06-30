@@ -133,3 +133,43 @@ export const agreementsApi = createApiService<MaintenanceAgreement>('/api/agreem
 export const serviceCallsApi = createApiService<ServiceCall>('/api/service-calls');
 export const opportunitiesApi = createApiService<ReplacementOpportunity>('/api/opportunities');
 export const invoicesApi = createApiService<Invoice>('/api/invoices');
+
+// AI Insights types
+export interface RenewalPrediction {
+  customer_id: string;
+  customer_name: string;
+  agreement_id: string;
+  agreement_type: string;
+  renewal_probability: number;
+  end_date: string;
+  auto_renew: boolean;
+}
+
+export interface ChurnRisk {
+  customer_id: string;
+  customer_name: string;
+  agreement_id: string;
+  agreement_type: string;
+  churn_risk_score: number;
+  end_date: string;
+  days_remaining: number;
+}
+
+export interface RevenueForecast {
+  current_mrr: number;
+  active_agreements: number;
+  at_risk_revenue: number;
+  monthly_expirations: { month: string; count: number; revenue: number }[];
+}
+
+export interface PriorityOpportunity {
+  id: string;
+  customer_id: string;
+  customer_name: string;
+  equipment_id: string;
+  equipment_name: string;
+  equipment_age: number;
+  priority_score: number;
+  estimated_value: number;
+  reason: string;
+}

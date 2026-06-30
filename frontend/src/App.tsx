@@ -15,6 +15,7 @@ import AgreementsPage from './pages/agreements/AgreementsPage';
 import ServiceCallsPage from './pages/service/ServiceCallsPage';
 import OpportunitiesPage from './pages/opportunities/OpportunitiesPage';
 import ReportsPage from './pages/reports/ReportsPage';
+import AIInsightsPage from './pages/insights/AIInsightsPage';
 import AdminPortalPage from './pages/admin/AdminPortalPage';
 import CompaniesPage from './pages/companies/CompaniesPage';
 
@@ -68,6 +69,7 @@ export default function App() {
               <Route path="service-calls" element={<ServiceCallsPage />} />
               <Route path="opportunities" element={<OpportunitiesPage />} />
               <Route path="reports" element={<ReportsPage />} />
+              <Route path="insights" element={<AIInsightsPage />} />
               <Route path="admin" element={<AdminPortalPage />} />
               <Route path="companies" element={<CompaniesPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
