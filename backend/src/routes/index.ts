@@ -11,6 +11,7 @@ import invoiceRoutes from './invoices';
 import billingRoutes from './billing';
 import webhookRoutes from './webhooks';
 import insightsRoutes from './insights';
+import reportRoutes from './reports';
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use('/invoices', invoiceRoutes);
 router.use('/billing', billingRoutes);
 router.use('/webhooks', webhookRoutes);
 router.use('/insights', insightsRoutes);
+router.use('/reports', reportRoutes);
 
 export { router as routes };
